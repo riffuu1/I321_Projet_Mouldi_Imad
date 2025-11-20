@@ -1,75 +1,71 @@
-// entities/Pizza.js
-const db = require('../config/database');
+import db from '../config/database.js';
 
 class Pizza {
-    static create({ name, description, imageUrl, price }) {
-        const sql = `INSERT INTO products (name, description, imageUrl, price, created_at, updated_at)
-                 VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))`;
-        const params = [name, description || null, imageUrl || null, price];
 
-        return new Promise((resolve, reject) => {
-            db.run(sql, params, function (err) {
-                if (err) return reject(err);
-                // fetch created row
-                Pizza.findById(this.lastID).then(resolve).catch(reject);
-            });
-        });
+    // CREATE
+    static async create({ name, description, imageUrl, price }) {
+        const sql = `INSERT INTO pizzas (name, price, created_at) VALUES (?, ?, NOW())`;
+        // Note: j'ai simplifié pour coller à ta table SQL créée plus tôt. Ajoute description/image si ta table les a.
+
+        try {
+            const [result] = await db.execute(sql, [name, price]);
+            // En MySQL, l'ID créé est dans result.insertId
+            return this.findById(result.insertId);
+        } catch (err) {
+            throw err;
+        }
     }
 
-//Méthode qui sera appelée par le contrôleur dans le cas d'un Get (all)
-    static findAll() {
-        const sql = `SELECT * FROM pizzas ORDER BY id DESC`;
-        return new Promise((resolve, reject) => {
-            db.all(sql, [], (err, rows) => {
-                if (err) return reject(err);
-                resolve(rows);
-            });
-        });
+    // FIND ALL
+    static async findAll() {
+        const sql = `SELECT * FROM pizzas`;
+        try {
+            const [rows] = await db.query(sql);
+            return rows;
+        } catch (err) {
+            throw err;
+        }
     }
 
-//Méthode qui sera appelée par le contrôleur dans le cas d'un Get by id
-    static findById(id) {
+    // FIND BY ID
+    static async findById(id) {
         const sql = `SELECT * FROM pizzas WHERE id = ?`;
-        return new Promise((resolve, reject) => {
-            db.get(sql, [id], (err, row) => {
-                if (err) return reject(err);
-                resolve(row || null);
-            });
-        });
+        try {
+            const [rows] = await db.execute(sql, [id]);
+            return rows[0] || null;
+        } catch (err) {
+            throw err;
+        }
     }
 
-//Méthode qui sera appelée par le contrôleur dans le cas d'un PUT
-    static update(id, { name, description, imageUrl, price }) {
+    // UPDATE
+    static async update(id, { name, price }) {
+        // COALESCE fonctionne, mais attention à la syntaxe SQL stricte
         const sql = `
-      UPDATE pizzas
-      SET name = COALESCE(?, name),
-          description = COALESCE(?, description),
-          imageUrl = COALESCE(?, imageUrl),
-          price = COALESCE(?, price),
-          updated_at = datetime('now')
-      WHERE id = ?
-    `;
-        const params = [name, description, imageUrl, price, id];
+            UPDATE pizzas 
+            SET name = COALESCE(?, name), 
+                price = COALESCE(?, price)
+            WHERE id = ?`;
 
-        return new Promise((resolve, reject) => {
-            db.run(sql, params, function (err) {
-                if (err) return reject(err);
-                if (this.changes === 0) return resolve(null);
-                Pizza.findById(id).then(resolve).catch(reject);
-            });
-        });
+        try {
+            const [result] = await db.execute(sql, [name, price, id]);
+            if (result.affectedRows === 0) return null;
+            return this.findById(id);
+        } catch (err) {
+            throw err;
+        }
     }
 
-//Méthode qui sera appelée par le contrôleur dans le cas d'un Delete by ID
-    static delete(id) {
+    // DELETE
+    static async delete(id) {
         const sql = `DELETE FROM pizzas WHERE id = ?`;
-        return new Promise((resolve, reject) => {
-            db.run(sql, [id], function (err) {
-                if (err) return reject(err);
-                resolve(this.changes); // number of rows deleted
-            });
-        });
+        try {
+            const [result] = await db.execute(sql, [id]);
+            return result.affectedRows; // Retourne le nombre de lignes supprimées
+        } catch (err) {
+            throw err;
+        }
     }
 }
 
-module.exports = Pizza;
+export default Pizza;

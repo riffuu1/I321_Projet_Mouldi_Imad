@@ -1,90 +1,77 @@
-// controllers/productController.js
-const { validationResult } = require('express-validator');
-const Product = require('../entities/Pizza');
+// On ne veut importer QUE ce dont on a besoin, sans express-validator
+import Pizza from '../entities/Pizza.js';
 
-/**
- * Controller functions use Express (req, res) signatures and
- * respond with status codes matching MDN/HTTP recommendations.
- */
-
-//Méthode exploitée dans le cas d'un POST (en provenance du router "product.js"
-exports.create = async (req, res, next) => {
+// GET ALL (C'est la seule fonction dont on a besoin pour l'instant)
+export const findAll = async (req, res, next) => {
     try {
-        // validation result
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            // 400 Bad Request for validation problems
-            return res.status(400).json({ errors: errors.array() });
+        const pizzas = await Pizza.findAll();
+        // S'assurer qu'on reçoit un tableau vide si aucune pizza n'est trouvée
+        if (!pizzas || pizzas.length === 0) {
+            return res.status(200).json([]);
         }
-
-        const { name, description, imageUrl, price } = req.body;
-        const created = await Product.create({ name, description, imageUrl, price });
-        // 201 Created
-        return res.status(201).json(created);
+        res.status(200).json(pizzas);
     } catch (err) {
+        // En cas d'erreur de base de données (si les tables ne sont pas remplies)
+        console.error("Erreur lors de la récupération des pizzas :", err);
         next(err);
     }
 };
 
-//Méthode exploitée dans le cas d'un Get ALL (en provenance du router "product.js"
-exports.findAll = async (req, res, next) => {
-    try {
-        const pizza = await Pizza.findAll();
-        // 200 OK
-        return res.status(200).json(pizza);
-    } catch (err) {
-        next(err);
-    }
-};
-
-//Méthode exploitée dans le cas d'un GET by ID (en provenance du router "product.js"
-exports.findOne = async (req, res, next) => {
+// GET ONE
+export const findOne = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
-        if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid product id' });
+        if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
 
         const pizza = await Pizza.findById(id);
-        if (!pizza) return res.status(404).json({ error: 'Product not found' }); // 404 Not Found
+        if (!pizza) return res.status(404).json({ error: 'Pizza not found' });
 
-        return res.status(200).json(pizza);
+        res.status(200).json(pizza);
     } catch (err) {
         next(err);
     }
 };
 
-//Méthode exploitée dans le cas d'un PUT (en provenance du router "product.js"
-exports.update = async (req, res, next) => {
+// CREATE
+export const create = async (req, res, next) => {
     try {
-        // validation result
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const id = Number(req.params.id);
-        if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid product id' });
-
-        const { name, description, imageUrl, price } = req.body;
-        const updated = await Pizza.update(id, { name, description, imageUrl, price });
-        if (!updated) return res.status(404).json({ error: 'Pizza not found' }); // 404 Not Found
-
-        return res.status(200).json(updated);
+        const created = await Pizza.create(req.body);
+        res.status(201).json(created);
     } catch (err) {
         next(err);
     }
 };
 
-//Méthode exploitée dans le cas d'un DELETE (en provenance du router "product.js"
-exports.delete = async (req, res, next) => {
+// UPDATE
+export const update = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
-        if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid product id' });
+        if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-        const deleted = await Pizza.delete(id);
-        if (deleted === 0) return res.status(404).json({ error: 'Pizza not found' });
+        const updated = await Pizza.update(id, req.body);
+        if (!updated) return res.status(404).json({ error: 'Pizza not found' });
 
-        // 204 No Content on successful delete
-        return res.status(204).send();
+        res.status(200).json(updated);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// DELETE
+export const remove = async (req, res, next) => { // J'ai renommé 'delete' en 'remove' car delete est un mot réservé parfois
+    try {
+        const id = Number(req.params.id);
+        if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
+
+        const deletedCount = await Pizza.delete(id);
+        if (deletedCount === 0) return res.status(404).json({ error: 'Pizza not found' });
+
+        res.status(204).send();
     } catch (err) {
         next(err);
     }
