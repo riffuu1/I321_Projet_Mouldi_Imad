@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="99081cab-1842-422c-b71a-5947d126f507" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mypizza/config/pizzayolo.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mypizza/config/pizzayolo.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
