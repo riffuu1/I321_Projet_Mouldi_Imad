@@ -1,7 +1,7 @@
-// entities/Product.js
+// entities/Pizza.js
 const db = require('../config/database');
 
-class Product {
+class Pizza {
     static create({ name, description, imageUrl, price }) {
         const sql = `INSERT INTO products (name, description, imageUrl, price, created_at, updated_at)
                  VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))`;
@@ -11,14 +11,14 @@ class Product {
             db.run(sql, params, function (err) {
                 if (err) return reject(err);
                 // fetch created row
-                Product.findById(this.lastID).then(resolve).catch(reject);
+                Pizza.findById(this.lastID).then(resolve).catch(reject);
             });
         });
     }
 
 //Méthode qui sera appelée par le contrôleur dans le cas d'un Get (all)
     static findAll() {
-        const sql = `SELECT * FROM products ORDER BY id DESC`;
+        const sql = `SELECT * FROM pizzas ORDER BY id DESC`;
         return new Promise((resolve, reject) => {
             db.all(sql, [], (err, rows) => {
                 if (err) return reject(err);
@@ -29,7 +29,7 @@ class Product {
 
 //Méthode qui sera appelée par le contrôleur dans le cas d'un Get by id
     static findById(id) {
-        const sql = `SELECT * FROM products WHERE id = ?`;
+        const sql = `SELECT * FROM pizzas WHERE id = ?`;
         return new Promise((resolve, reject) => {
             db.get(sql, [id], (err, row) => {
                 if (err) return reject(err);
@@ -41,7 +41,7 @@ class Product {
 //Méthode qui sera appelée par le contrôleur dans le cas d'un PUT
     static update(id, { name, description, imageUrl, price }) {
         const sql = `
-      UPDATE products
+      UPDATE pizzas
       SET name = COALESCE(?, name),
           description = COALESCE(?, description),
           imageUrl = COALESCE(?, imageUrl),
@@ -55,14 +55,14 @@ class Product {
             db.run(sql, params, function (err) {
                 if (err) return reject(err);
                 if (this.changes === 0) return resolve(null);
-                Product.findById(id).then(resolve).catch(reject);
+                Pizza.findById(id).then(resolve).catch(reject);
             });
         });
     }
 
 //Méthode qui sera appelée par le contrôleur dans le cas d'un Delete by ID
     static delete(id) {
-        const sql = `DELETE FROM products WHERE id = ?`;
+        const sql = `DELETE FROM pizzas WHERE id = ?`;
         return new Promise((resolve, reject) => {
             db.run(sql, [id], function (err) {
                 if (err) return reject(err);
@@ -72,4 +72,4 @@ class Product {
     }
 }
 
-module.exports = Product;
+module.exports = Pizza;

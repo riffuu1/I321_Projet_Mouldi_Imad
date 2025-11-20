@@ -115,10 +115,10 @@ const createAndUpdateValidations = [
 
 
 //Après la validation, la redirection vers le contrôleur dédiée
-router.get('/', productController.findAll);
-router.post('/', createAndUpdateValidations, productController.create);
-router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], productController.findOne);
-router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], productController.update);
-router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], productController.delete);
+router.get('/', pizzaController.findAll);
+router.post('/', createAndUpdateValidations, pizzaController.create);
+router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzaController.findOne);
+router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], pizzaController.update);
+router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzaController.delete);
 
 module.exports = router;
