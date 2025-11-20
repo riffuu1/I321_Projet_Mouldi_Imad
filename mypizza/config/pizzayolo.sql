@@ -14,11 +14,43 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table pizzayolo.ingredients : ~8 rows (environ)
+INSERT INTO `ingredients` (`id`, `name`) VALUES
+	(1, 'Sauce Tomate'),
+	(2, 'Mozzarella'),
+	(3, 'Jambon'),
+	(4, 'Champignons'),
+	(5, 'Ananas'),
+	(6, 'Poivrons'),
+	(7, 'Olives Noires'),
+	(8, 'Origan');
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table pizzayolo.pizzas : ~4 rows (environ)
+INSERT INTO `pizzas` (`id`, `name`, `price`) VALUES
+	(1, 'Margherita', 9.50),
+	(2, 'Reine', 12.00),
+	(3, 'Hawaiienne', 13.50),
+	(4, 'Végétarienne', 11.00);
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table pizzayolo.pizza_ingredients : ~17 rows (environ)
+INSERT INTO `pizza_ingredients` (`pizza_id`, `ingredient_id`) VALUES
+	(1, 1),
+	(1, 2),
+	(1, 8),
+	(2, 1),
+	(2, 2),
+	(2, 3),
+	(2, 4),
+	(2, 8),
+	(3, 1),
+	(3, 2),
+	(3, 3),
+	(3, 5),
+	(4, 1),
+	(4, 2),
+	(4, 4),
+	(4, 6),
+	(4, 7);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
