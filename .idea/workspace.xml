@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="99081cab-1842-422c-b71a-5947d126f507" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mypizza/config/pizzayolo.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mypizza/config/pizzayolo.sql" afterDir="false" />
+    </list>
+=======
     <list default="true" id="99081cab-1842-422c-b71a-5947d126f507" name="Changes" comment="" />
+>>>>>>> da09807e6adfb0ef5c21018ce343371211d9b9bd
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
