@@ -117,6 +117,7 @@ var createAndUpdateValidations = [
 //Après la validation, la redirection vers le contrôleur dédiée
 router.get('/', pizzaController.findAll);
 router.get('/:id', pizzaController.findOne);
+router.get('/:id/ingredients', pizzaController.findIngredients);
 
 
 module.exports = router;

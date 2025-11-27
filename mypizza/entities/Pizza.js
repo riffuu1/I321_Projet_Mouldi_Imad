@@ -18,24 +18,11 @@ class Pizza {
 
     // FIND ALL
     static async findAll() {
-        const sql = `SELECT
-                         p.id,
-                         p.name,
-                         p.price,
-                         GROUP_CONCAT(i.name) AS ingredients
-                     FROM pizzas p
-                              LEFT JOIN pizza_ingredients pi ON p.id = pi.pizza_id
-                              LEFT JOIN ingredients i ON pi.ingredient_id = i.id
-                     GROUP BY p.id`;
+        const sql = 'SELECT * FROM pizzas';
         try {
             const [rows] = await db.query(sql);
-            return rows.map(row => ({
-                id: row.id,
-                name: row.name,
-                price: row.price,
-                ingredients: row.ingredients ? row.ingredients.split(',') : []
-            }));
-        }catch (err) {
+            return rows;
+        } catch (err) {
             throw err;
         }
     }
@@ -43,9 +30,22 @@ class Pizza {
 
     // FIND BY ID
     static async findById(id) {
+        const sql = 'SELECT * FROM pizzas WHERE id = ?';
+        try {
+            const [rows] = await db.query(sql, [id]);
+            // Vérifie si on a trouvé une pizza
+            if (rows.length === 0) return null;
+            // Retourne la première pizza (il n’y en aura qu’une)
+            return rows[0];
+        } catch (err) {
+            throw err;
+        }
+    }
+
+// FIND INGREDIENTS ONLY
+    static async findIngredients(id) {
         const sql = `SELECT p.id,
-                            p.name,
-                            p.price,
+                                p.name,
                             GROUP_CONCAT(i.name) AS ingredients
                      FROM pizzas p
                               LEFT JOIN pizza_ingredients pi ON p.id = pi.pizza_id
@@ -58,7 +58,6 @@ class Pizza {
                 ? {
                     id: rows[0].id,
                     name: rows[0].name,
-                    price: rows[0].price,
                     ingredients: rows[0].ingredients ? rows[0].ingredients.split(',') : []
                 }
                 : null; // si aucune pizza trouvée
@@ -66,6 +65,8 @@ class Pizza {
             throw err;
         }
     }
+
+
 
     // UPDATE
     static async update(id, { name, price }) {
