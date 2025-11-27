@@ -18,21 +18,50 @@ class Pizza {
 
     // FIND ALL
     static async findAll() {
-        const sql = `SELECT * FROM pizzas`;
+        const sql = `SELECT
+                         p.id,
+                         p.name,
+                         p.price,
+                         GROUP_CONCAT(i.name) AS ingredients
+                     FROM pizzas p
+                              LEFT JOIN pizza_ingredients pi ON p.id = pi.pizza_id
+                              LEFT JOIN ingredients i ON pi.ingredient_id = i.id
+                     GROUP BY p.id`;
         try {
             const [rows] = await db.query(sql);
-            return rows;
-        } catch (err) {
+            return rows.map(row => ({
+                id: row.id,
+                name: row.name,
+                price: row.price,
+                ingredients: row.ingredients ? row.ingredients.split(',') : []
+            }));
+        }catch (err) {
             throw err;
         }
     }
 
+
     // FIND BY ID
     static async findById(id) {
-        const sql = `SELECT * FROM pizzas WHERE id = ?`;
+        const sql = `SELECT p.id,
+                            p.name,
+                            p.price,
+                            GROUP_CONCAT(i.name) AS ingredients
+                     FROM pizzas p
+                              LEFT JOIN pizza_ingredients pi ON p.id = pi.pizza_id
+                              LEFT JOIN ingredients i ON pi.ingredient_id = i.id
+                     WHERE p.id = ?
+                     GROUP BY p.id`;
         try {
             const [rows] = await db.execute(sql, [id]);
-            return rows[0] || null;
+            return rows.length > 0
+                ? {
+                    id: rows[0].id,
+                    name: rows[0].name,
+                    price: rows[0].price,
+                    ingredients: rows[0].ingredients ? rows[0].ingredients.split(',') : []
+                }
+                : null; // si aucune pizza trouvée
         } catch (err) {
             throw err;
         }
