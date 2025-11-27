@@ -7,6 +7,7 @@ var logger =require( 'morgan');
 // Note: Si tes fichiers routes utilisent encore "require", ça plantera après.
 // Pour l'instant, on importe juste express.
 var pizzaRouter=require( './routes/pizza.js');
+var ingredientsRouter=require( './routes/ingredients.js');
 
 var app = express();
 
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/pizzas', pizzaRouter);
+app.use('/ingredients', ingredientsRouter);
 
 // ---------------------------------------------------------
 // DÉMARRAGE DU SERVEUR (Ajouté car tu lances via node app.js)
