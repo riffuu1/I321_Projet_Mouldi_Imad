@@ -1,15 +1,13 @@
-import db from '../config/database.js';
+var db = require('../config/database.js').default;
 
 class Ingredients {
 
     // CREATE
-    static async create({ name, description, imageUrl, price }) {
-        const sql = `INSERT INTO ingredients (name, price, created_at) VALUES (?, ?, NOW())`;
-        // Note: j'ai simplifié pour coller à ta table SQL créée plus tôt. Ajoute description/image si ta table les a.
+    static async create({ name}) {
+        const sql = `INSERT INTO ingredients (name) VALUES (?)`;
 
         try {
-            const [result] = await db.execute(sql, [name, price]);
-            // En MySQL, l'ID créé est dans result.insertId
+            const [result] = await db.execute(sql, [name]);
             return this.findById(result.insertId);
         } catch (err) {
             throw err;
@@ -39,16 +37,14 @@ class Ingredients {
     }
 
     // UPDATE
-    static async update(id, { name, price }) {
-        // COALESCE fonctionne, mais attention à la syntaxe SQL stricte
+    static async update(id, { name}) {
         const sql = `
-            UPDATE ingredients 
-            SET name = COALESCE(?, name), 
-                price = COALESCE(?, price)
+            UPDATE ingredients
+            SET name = COALESCE(?, name)
             WHERE id = ?`;
 
         try {
-            const [result] = await db.execute(sql, [name, price, id]);
+            const [result] = await db.execute(sql, [name, id]);
             if (result.affectedRows === 0) return null;
             return this.findById(id);
         } catch (err) {
@@ -61,11 +57,11 @@ class Ingredients {
         const sql = `DELETE FROM ingredients WHERE id = ?`;
         try {
             const [result] = await db.execute(sql, [id]);
-            return result.affectedRows; // Retourne le nombre de lignes supprimées
+            return result.affectedRows;
         } catch (err) {
             throw err;
         }
     }
 }
 
-export default Ingredients;
+module.exports = Ingredients;
