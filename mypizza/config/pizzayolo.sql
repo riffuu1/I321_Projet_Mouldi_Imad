@@ -76,6 +76,21 @@ CREATE TABLE IF NOT EXISTS `pizza_ingredients` (
 
     ) ENGINE = InnoDB;
 
+
+DROP TABLE IF EXISTS `pizza_du_jour` ;
+CREATE TABLE IF NOT EXISTS `pizza_du_jour` (
+
+                                               `pizza_id_choix` INT NOT NULL,
+
+                                               UNIQUE (`pizza_id_choix`),
+
+    CONSTRAINT `fk_pizza_choix`
+    FOREIGN KEY (`pizza_id_choix`)
+    REFERENCES `pizzas` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+    ) ENGINE = InnoDB;
+
+
 -- Insérer les Ingrédients
 
 INSERT INTO ingredients (name) VALUES
@@ -125,6 +140,10 @@ INSERT INTO pizza_ingredients (pizza_id, ingredient_id) VALUES (3, 1), (3, 2), (
 -- Végétarienne
 
 INSERT INTO pizza_ingredients (pizza_id, ingredient_id) VALUES (4, 1), (4, 2), (4, 4), (4, 6), (4, 7);
+
+
+INSERT INTO `pizza_du_jour` (`pizza_id_choix`) VALUES (4);
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 
