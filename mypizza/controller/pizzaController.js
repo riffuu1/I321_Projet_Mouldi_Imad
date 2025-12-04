@@ -1,8 +1,9 @@
 // On ne veut importer QUE ce dont on a besoin, sans express-validator
-import Pizza from '../entities/Pizza.js';
+var Pizza = require('../entities/Pizza.js');
+var validationResult = require('express-validator').validationResult;;
 
 // GET ALL (C'est la seule fonction dont on a besoin pour l'instant)
-export const findAll = async (req, res, next) => {
+exports.findAll = async (req, res, next) => {
     try {
         const pizzas = await Pizza.findAll();
         // S'assurer qu'on reçoit un tableau vide si aucune pizza n'est trouvée
@@ -18,7 +19,7 @@ export const findAll = async (req, res, next) => {
 };
 
 // GET ONE
-export const findOne = async (req, res, next) => {
+exports.findOne = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
         if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
@@ -33,7 +34,7 @@ export const findOne = async (req, res, next) => {
 };
 
 // GET INGREDIENTS
-export const findIngredients = async (req, res, next) => {
+exports.findIngredients = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
         if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
@@ -48,7 +49,7 @@ export const findIngredients = async (req, res, next) => {
 };
 
 // CREATE
-export const create = async (req, res, next) => {
+exports.create = async (req, res, next) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -63,7 +64,7 @@ export const create = async (req, res, next) => {
 };
 
 // UPDATE
-export const update = async (req, res, next) => {
+exports.update = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
         if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
@@ -78,7 +79,7 @@ export const update = async (req, res, next) => {
 };
 
 // DELETE
-export const remove = async (req, res, next) => { // J'ai renommé 'delete' en 'remove' car delete est un mot réservé parfois
+exports.remove = async (req, res, next) => { // J'ai renommé 'delete' en 'remove' car delete est un mot réservé parfois
     try {
         const id = Number(req.params.id);
         if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
