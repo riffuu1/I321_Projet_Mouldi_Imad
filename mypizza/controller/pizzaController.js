@@ -92,3 +92,18 @@ exports.remove = async (req, res, next) => { // J'ai renommé 'delete' en 'remov
         next(err);
     }
 };
+
+    exports.findDailyPizza= async (req, res, next) => {
+    try {
+        var pizza = await Pizza.findDailyPizza();
+        // S'assurer qu'on reçoit un tableau vide si aucune pizza n'est trouvée
+        if (!pizza) {
+            return res.status(404).json({error: 'No daily pizza found'});
+        }
+        res.status(200).json(pizza);
+    } catch (err) {
+        // En cas d'erreur de base de données (si les tables ne sont pas remplies)
+        console.error("Erreur lors de la récupération des pizzas :", err);
+        next(err);
+    }
+};
