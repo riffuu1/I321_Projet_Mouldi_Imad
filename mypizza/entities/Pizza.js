@@ -66,6 +66,20 @@ class Pizza {
             throw err;
         }
     }
+
+    static async findDailyPizza() {
+        const sql = `SELECT p.* FROM pizzas p JOIN pizza_du_jour pdj
+        on p.id = pdj.pizza_id_choix LIMIT 1`;
+
+        try {
+            const [rows] = await db.query(sql);
+            return rows[0] || null;
+        } catch (err) {
+            console.error("Error getting pizza_du_jour", err);
+            throw err;
+        }
+
+    }
 }
 
 export default Pizza;

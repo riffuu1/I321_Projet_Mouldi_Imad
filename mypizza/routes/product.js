@@ -1,8 +1,7 @@
 // routes/products.js
-const express = require('express');
-const { body, param } = require('express-validator');
-const productController = require('../controllers/productController');
-
+import express from 'express'; // CORRIGÉ : Remplacé const express = require('express');
+import { body, param } from 'express-validator';
+import * as pizzaController from '../controller/pizzaController.js';
 const router = express.Router();
 
 //Documentation pour le SWAGGER
@@ -117,8 +116,9 @@ const createAndUpdateValidations = [
 //Après la validation, la redirection vers le contrôleur dédiée
 router.get('/', pizzaController.findAll);
 router.post('/', createAndUpdateValidations, pizzaController.create);
+router.get('/daily-Pizza', pizzaController.findDailyPizza)
 router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzaController.findOne);
 router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), ...createAndUpdateValidations], pizzaController.update);
-router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzaController.delete);
+router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], pizzaController.remove);
 
-module.exports = router;
+export default router;

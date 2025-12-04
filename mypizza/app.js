@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 // Note: Si tes fichiers routes utilisent encore "require", ça plantera après.
 // Pour l'instant, on importe juste express.
 import indexRouter from './routes/index.js';
+import productRouter from './routes/product.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/pizzas', productRouter);
 
 // ---------------------------------------------------------
 // DÉMARRAGE DU SERVEUR (Ajouté car tu lances via node app.js)
