@@ -1,8 +1,7 @@
-import express from 'express';
-import path from 'path';
-import cookieParser from 'cookie-parser';
-import logger from 'morgan';
-import { fileURLToPath } from 'url';
+var express = require('express');
+var path =require('path');
+var cookieParser = require('cookie-parser');
+var logger =require ('morgan');
 
 // Pour gérer les chemins de fichiers en mode module
 const __filename = fileURLToPath(import.meta.url);
@@ -11,8 +10,8 @@ const __dirname = path.dirname(__filename);
 // Import des routes (Assure-toi que ces fichiers existent ou commente-les si besoin)
 // Note: Si tes fichiers routes utilisent encore "require", ça plantera après.
 // Pour l'instant, on importe juste express.
-import indexRouter from './routes/index.js';
-import productRouter from './routes/product.js';
+var pizzaRouter = require ('./routes/Pizza');
+var ingredientsRouter = require ('./routes/ingredients');
 
 const app = express();
 
