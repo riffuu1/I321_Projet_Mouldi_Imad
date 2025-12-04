@@ -109,8 +109,6 @@ var router = express.Router();
  */
 var createAndUpdateValidations = [
     body('name').isString().notEmpty().withMessage('name is required'),
-    body('description').optional().isString(),
-    body('imageUrl').optional().isString().isURL().withMessage('imageUrl must be a valid URL'),
     body('price').isFloat({ gt: 0 }).withMessage('price must be a positive number'),
 ];
 
@@ -118,6 +116,8 @@ var createAndUpdateValidations = [
 router.get('/', pizzaController.findAll);
 router.get('/:id', pizzaController.findOne);
 router.get('/:id/ingredients', pizzaController.findIngredients);
+
+router.post('/', createAndUpdateValidations, pizzaController.create);
 
 
 module.exports = router;

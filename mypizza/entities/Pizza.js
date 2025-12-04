@@ -1,10 +1,10 @@
-import db from '../config/database.js';
+var db = require('../config/database.js').default;
 
 class Pizza {
 
     // CREATE
     static async create({ name, description, imageUrl, price }) {
-        const sql = `INSERT INTO pizzas (name, price, created_at) VALUES (?, ?, NOW())`;
+        const sql = `INSERT INTO pizzas (name, price) VALUES (?,?)`;
         // Note: j'ai simplifié pour coller à ta table SQL créée plus tôt. Ajoute description/image si ta table les a.
 
         try {
@@ -98,4 +98,4 @@ class Pizza {
     }
 }
 
-export default Pizza;
+module.exports = Pizza;
