@@ -120,5 +120,7 @@ router.get('/:id/ingredients', pizzaController.findIngredients);
 
 router.post('/', createAndUpdateValidations, pizzaController.create);
 
+router.patch('/:id', createAndUpdateValidations, pizzaController.update);
+
 
 module.exports = router;

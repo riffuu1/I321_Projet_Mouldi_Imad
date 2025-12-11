@@ -71,6 +71,10 @@ class Pizza {
     // UPDATE
     static async update(id, { name, price }) {
         // COALESCE fonctionne, mais attention à la syntaxe SQL stricte
+        const newName = name ?? null
+        const newPrice = price ?? null
+
+
         const sql = `
             UPDATE pizzas 
             SET name = COALESCE(?, name), 
@@ -78,7 +82,7 @@ class Pizza {
             WHERE id = ?`;
 
         try {
-            const [result] = await db.execute(sql, [name, price, id]);
+            const [result] = await db.execute(sql, [newName, newPrice, id]);
             if (result.affectedRows === 0) return null;
             return this.findById(id);
         } catch (err) {
