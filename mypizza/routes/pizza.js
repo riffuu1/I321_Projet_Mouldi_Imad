@@ -118,6 +118,8 @@ router.get('/', pizzaController.findAll);
 router.get('/:id', pizzaController.findOne);
 router.get('/:id/ingredients', pizzaController.findIngredients);
 
+router.delete('/:id', pizzaController.remove);
+
 router.post('/', createAndUpdateValidations, pizzaController.create);
 
 

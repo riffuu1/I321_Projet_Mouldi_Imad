@@ -66,6 +66,10 @@ exports.remove = async (req, res, next) => {
         const id = Number(req.params.id);
         if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
 
+        res.status(200).json({
+            message: `L'ingrédient ${id} a bien été supprimé`,
+            deleteId: id})
+
         const deletedCount = await Ingredients.delete(id);
         if (deletedCount === 0) return res.status(404).json({ error: 'Ingredient not found' });
 
