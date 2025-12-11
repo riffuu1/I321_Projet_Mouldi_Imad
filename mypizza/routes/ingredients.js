@@ -17,4 +17,6 @@ router.get('/:id', ingredientsController.findOne);
 
 router.post('/', createAndUpdateValidations, ingredientsController.create);
 
+router.patch('/:id', createAndUpdateValidations, ingredientsController.update);
+
 module.exports = router;
