@@ -84,6 +84,11 @@ exports.remove = async (req, res, next) => { // J'ai renommé 'delete' en 'remov
         const id = Number(req.params.id);
         if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
 
+        res.status(200).json({
+            message: `La pizza ${id} a bien été supprimé`,
+            deleteId: id
+        })
+
         const deletedCount = await Pizza.delete(id);
         if (deletedCount === 0) return res.status(404).json({ error: 'Pizza not found' });
 

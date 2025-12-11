@@ -15,6 +15,8 @@ var createAndUpdateValidations = [
 router.get('/', ingredientsController.findAll);
 router.get('/:id', ingredientsController.findOne);
 
+router.delete('/:id', ingredientsController.remove);
+
 router.post('/', createAndUpdateValidations, ingredientsController.create);
 
 router.patch('/:id', createAndUpdateValidations, ingredientsController.update);
