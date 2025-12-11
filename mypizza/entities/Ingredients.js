@@ -38,13 +38,15 @@ class Ingredients {
 
     // UPDATE
     static async update(id, { name}) {
+
+        const newName = name ?? null;
         const sql = `
             UPDATE ingredients
             SET name = COALESCE(?, name)
             WHERE id = ?`;
 
         try {
-            const [result] = await db.execute(sql, [name, id]);
+            const [result] = await db.execute(sql, [newName, id]);
             if (result.affectedRows === 0) return null;
             return this.findById(id);
         } catch (err) {
