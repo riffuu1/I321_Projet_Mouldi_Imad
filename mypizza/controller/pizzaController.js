@@ -98,7 +98,7 @@ exports.remove = async (req, res, next) => { // J'ai renommé 'delete' en 'remov
     }
 };
 
-    exports.findDailyPizza= async (req, res, next) => {
+exports.findDailyPizza= async (req, res, next) => {
     try {
         var pizza = await Pizza.findDailyPizza();
         // S'assurer qu'on reçoit un tableau vide si aucune pizza n'est trouvée
@@ -109,6 +109,26 @@ exports.remove = async (req, res, next) => { // J'ai renommé 'delete' en 'remov
     } catch (err) {
         // En cas d'erreur de base de données (si les tables ne sont pas remplies)
         console.error("Erreur lors de la récupération des pizzas :", err);
+        next(err);
+    }
+};
+exports.updateDailyPizza = async (req, res, next) => {
+    try {
+        const { pizza_id } = req.body;
+
+        if (!pizza_id) {
+            return res.status(400).json({ error: "pizza_id is required" });
+        }
+
+        const updatedPizza = await Pizza.updateDailyPizza(pizza_id);
+
+        if (!updatedPizza) {
+            return res.status(404).json({ error: "Daily pizza not updated" });
+        }
+
+        res.status(200).json(updatedPizza);
+    } catch (err) {
+        console.error("Erreur lors de la mise à jour de la pizza du jour :", err);
         next(err);
     }
 };
