@@ -114,6 +114,23 @@ class Pizza {
         }
 
     }
+    static async updateDailyPizza(pizzaId) {
+        const sql = `
+        UPDATE pizza_du_jour
+        SET pizza_id_choix = ?
+        LIMIT 1
+    `;
+
+        try {
+            const [result] = await db.execute(sql, [pizzaId]);
+            if (result.affectedRows === 0) return null;
+            return this.findDailyPizza();
+        } catch (err) {
+            console.error("Error updating pizza_du_jour", err);
+            throw err;
+        }
+    }
+
 }
 
 module.exports = Pizza;

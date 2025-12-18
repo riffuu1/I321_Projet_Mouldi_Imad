@@ -122,7 +122,7 @@ router.delete('/:id', pizzaController.remove);
 
 router.post('/', createAndUpdateValidations, pizzaController.create);
 
-router.patch('/:id', createAndUpdateValidations, pizzaController.update);
+router.patch('/daily-Pizza',pizzaController.updateDailyPizza);
 
 
 module.exports = router;
