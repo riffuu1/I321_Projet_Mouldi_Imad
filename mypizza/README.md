@@ -33,7 +33,7 @@ Suivez ces étapes pour mettre en place et lancer le projet en local.
 
 **2. Cloner le dépôt**
 ```bash
-git clone <URL_DU_DEPOT>
+git clone(https://github.com/riffuu1/I321_Projet_Mouldi_Imad.git)
 cd mypizza
 ```
 
